@@ -3,6 +3,7 @@ package com.example.springsecurityrepairservicerestapi.services;
 import com.example.springsecurityrepairservicerestapi.entities.Role;
 import com.example.springsecurityrepairservicerestapi.entities.User;
 import com.example.springsecurityrepairservicerestapi.repositories.UserRepository;
+import com.example.springsecurityrepairservicerestapi.utils.ERest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -82,6 +83,22 @@ public class UserService implements UserDetailsService {
 
 
     }
+    public  ResponseEntity list(){
+        Map<ERest,Object> hm=new LinkedHashMap<>();
+        try {
+            hm.put(ERest.status,true);
+            hm.put(ERest.result,userRepository.findAll());
+        }catch (Exception ex){
+            hm.put(ERest.status,false);
+            hm.put(ERest.message,"Error : "+ex);
+        }
+        return new ResponseEntity(hm,HttpStatus.OK);
+    }
+
+
+
+
+
     @Bean
     public PasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
